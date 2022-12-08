@@ -108,13 +108,16 @@ RUN mkdir -m 700 ~/.ssh && \
     touch -m 600 ~/.ssh/known_hosts && \
     ssh-keyscan github.com > /root/.ssh/known_hosts
 
+RUN mkdir -p /var/www/app
+RUN chown -R www-data:www-data /var/www
+
 # Supervisor config
 COPY ./supervisord.conf /etc/supervisord.conf
 
 # Override nginx's default config
 COPY ./default.conf /etc/nginx/conf.d/default.conf
 
-# Override default nginx welcome page
+# Override default nginx welcome page. @shahal - not relevant anymore
 COPY html /usr/share/nginx/html
 
 # Copy Scripts
