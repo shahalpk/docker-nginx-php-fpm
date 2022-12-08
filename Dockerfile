@@ -32,6 +32,7 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
     && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
     && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -q -y \
+            ssh \
             apt-utils \
             nano \
             zip \
@@ -102,6 +103,10 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
     && apt-get clean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -m 700 ~/.ssh && \
+    touch -m 600 ~/.ssh/known_hosts && \
+    ssh-keyscan github.com > /root/.ssh/known_hosts
 
 # Supervisor config
 COPY ./supervisord.conf /etc/supervisord.conf
