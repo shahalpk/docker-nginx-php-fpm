@@ -109,7 +109,7 @@ RUN mkdir -m 700 ~/.ssh && \
     ssh-keyscan github.com > /root/.ssh/known_hosts
 
 RUN mkdir -p /var/www/app
-RUN chown -R www-data:www-data /var/www
+RUN chown -R nginx:nginx /var/www
 
 # Supervisor config
 COPY ./supervisord.conf /etc/supervisord.conf
