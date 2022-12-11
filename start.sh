@@ -1,5 +1,6 @@
 #!/bin/bash
 cd /var/www/app
+php artisan config:cache
 php artisan migrate
 
 # Update nginx to match worker_processes to no. of cpu's
