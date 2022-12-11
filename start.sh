@@ -1,4 +1,6 @@
 #!/bin/bash
+cd /var/www/app
+php artisan migrate
 
 # Update nginx to match worker_processes to no. of cpu's
 procs=$(cat /proc/cpuinfo | grep processor | wc -l)
