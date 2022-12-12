@@ -111,11 +111,10 @@ RUN mkdir -m 700 ~/.ssh && \
 RUN mkdir -p /var/www/app
 RUN chown -R nginx:nginx /var/www
 
+COPY nginx/ /etc/nginx/
+
 # Supervisor config
 COPY ./supervisord.conf /etc/supervisord.conf
-
-# Override nginx's default config
-COPY ./default.conf /etc/nginx/conf.d/default.conf
 
 # Override default nginx welcome page. @shahal - not relevant anymore
 COPY html /usr/share/nginx/html
