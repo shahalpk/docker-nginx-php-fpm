@@ -35,6 +35,7 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
             ssh \
             apt-utils \
             nano \
+            vim \
             zip \
             unzip \
             python3-pip \
