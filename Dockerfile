@@ -2,16 +2,12 @@ FROM debian:bullseye-slim
 
 LABEL maintainer="Shahal Tharique shahalpk@gmail.com"
 
-SHELL ["/bin/bash", "--login", "-c"]
-
 # Let the container know that there is no tty
 ENV DEBIAN_FRONTEND noninteractive
 ENV NGINX_VERSION 1.21.6-1~bullseye
 ENV php_conf /etc/php/8.1/fpm/php.ini
 ENV fpm_conf /etc/php/8.1/fpm/pool.d/www.conf
 ENV COMPOSER_VERSION 2.2.7
-ENV NODE_VERSION=18
-ENV NVM_DIR=/root/.nvm
 
 # Install Basic Requirements
 RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
@@ -101,14 +97,12 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
     && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
     && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { unlink('/tmp/composer-setup.php'); echo 'Invalid installer' . PHP_EOL; exit(1); }" \
     && php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION} \
-    && rm -rf /tmp/composer-setup.php
+    && rm -rf /tmp/composer-setup.php \
+    # Install nodejs 18
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
     # Clean up
-
-RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
-RUN nvm install ${NODE_VERSION} \
-    && nvm use v${NODE_VERSION}
-
-RUN rm -rf /tmp/pear \
+    && rm -rf /tmp/pear \
     && apt-get purge -y --auto-remove $buildDeps \
     && apt-get clean \
     && apt-get autoremove \
