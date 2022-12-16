@@ -102,7 +102,7 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
     && rm -rf /tmp/composer-setup.php \
     # Install node/npm
     && curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
-    && sh "$NVM_DIR/nvm.sh"  \
+    && source "$NVM_DIR/nvm.sh"  \
     && nvm install ${NODE_VERSION} \
     && nvm use v${NODE_VERSION} \
     && nvm alias default v${NODE_VERSION} \
