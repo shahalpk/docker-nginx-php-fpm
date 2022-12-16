@@ -114,6 +114,8 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
     && rm -rf /var/lib/apt/lists/* 
 
 
+RUN composer -v && node -v && npm -v && php -v
+
 RUN mkdir -m 700 ~/.ssh && \
     touch -m 600 ~/.ssh/known_hosts && \
     ssh-keyscan github.com > /root/.ssh/known_hosts
