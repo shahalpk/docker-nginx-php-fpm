@@ -100,17 +100,18 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
     && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { unlink('/tmp/composer-setup.php'); echo 'Invalid installer' . PHP_EOL; exit(1); }" \
     && php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --version=${COMPOSER_VERSION} \
     && rm -rf /tmp/composer-setup.php \
+    # Install node/npm
+    && curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
+    && sh "$NVM_DIR/nvm.sh"  \
+    && nvm install ${NODE_VERSION} \
+    && nvm use v${NODE_VERSION} \
+    && nvm alias default v${NODE_VERSION} \
     # Clean up
     && rm -rf /tmp/pear \
     && apt-get purge -y --auto-remove $buildDeps \
     && apt-get clean \
     && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/* \
-    && curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
-    && "$NVM_DIR/nvm.sh"  \
-    && nvm install ${NODE_VERSION} \
-    && nvm use v${NODE_VERSION} \
-    && nvm alias default v${NODE_VERSION} \
+    && rm -rf /var/lib/apt/lists/* 
 
 
 RUN mkdir -m 700 ~/.ssh && \
