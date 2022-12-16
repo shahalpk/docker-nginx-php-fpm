@@ -8,6 +8,8 @@ ENV NGINX_VERSION 1.21.6-1~bullseye
 ENV php_conf /etc/php/8.1/fpm/php.ini
 ENV fpm_conf /etc/php/8.1/fpm/pool.d/www.conf
 ENV COMPOSER_VERSION 2.2.7
+ENV NODE_VERSION=18
+ENV NVM_DIR=/root/.nvm
 
 # Install Basic Requirements
 RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
@@ -103,7 +105,13 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
     && apt-get purge -y --auto-remove $buildDeps \
     && apt-get clean \
     && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
+    && "$NVM_DIR/nvm.sh"  \
+    && nvm install ${NODE_VERSION} \
+    && nvm use v${NODE_VERSION} \
+    && nvm alias default v${NODE_VERSION} \
+
 
 RUN mkdir -m 700 ~/.ssh && \
     touch -m 600 ~/.ssh/known_hosts && \
