@@ -17,12 +17,6 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
     && apt-get update \
     && apt-get install --no-install-recommends $buildDeps --no-install-suggests -q -y gnupg2 dirmngr wget apt-transport-https lsb-release ca-certificates \
     && \
-    # Install node/npm
-    && curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
-    && . "$NVM_DIR/nvm.sh"  \
-    && nvm install ${NODE_VERSION} \
-    && nvm use v${NODE_VERSION} \
-    && nvm alias default v${NODE_VERSION} \
     NGINX_GPGKEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62; \
           found=''; \
           for server in \
@@ -36,6 +30,12 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
           done; \
     test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; \
     echo "deb http://nginx.org/packages/mainline/debian/ bullseye nginx" >> /etc/apt/sources.list \
+    # Install node/npm
+    && curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
+    && . "$NVM_DIR/nvm.sh"  \
+    && nvm install ${NODE_VERSION} \
+    && nvm use v${NODE_VERSION} \
+    && nvm alias default v${NODE_VERSION} \
     && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
     && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
     && apt-get update \
