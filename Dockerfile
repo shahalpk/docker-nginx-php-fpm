@@ -32,10 +32,6 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
           done; \
     test -z "$found" && echo >&2 "error: failed to fetch GPG key $NGINX_GPGKEY" && exit 1; \
     echo "deb http://nginx.org/packages/mainline/debian/ bullseye nginx" >> /etc/apt/sources.list \
-    # Install node/npm
-    && curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
-    && nvm install ${NODE_VERSION} \
-    && nvm use v${NODE_VERSION} \
     && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
     && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
     && apt-get update \
@@ -112,6 +108,7 @@ RUN buildDeps='curl gcc make autoconf libc-dev zlib1g-dev pkg-config' \
     && apt-get clean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/* 
+
 
 
 RUN composer -v && node -v && npm -v && php -v
