@@ -115,7 +115,6 @@ RUN mkdir -m 700 ~/.ssh && \
     ssh-keyscan github.com > /root/.ssh/known_hosts
 
 RUN mkdir -p /var/www/app
-RUN chown -R nginx:nginx /var/www
 
 COPY nginx/ /etc/nginx/
 
